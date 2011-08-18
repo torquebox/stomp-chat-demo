@@ -1,0 +1,19 @@
+
+%script{:src=>'/jquery.js'}
+%script{:src=>'/stilts-stomp.js'}
+%script{:src=>'/chat.js'}
+%link{:rel=>'stylesheet', :href=>'/style.css'}
+
+#main-panel
+  #connecting
+    %h1 Connecting to server, #{session[:username]}.  Please be patient.
+
+  #chat-panel
+    %form#chat
+      %select#recipient
+        %option{:value=>"public"}Everyone
+      %input#input{:type=>:text, :size=>80}
+    #chat-text
+
+:javascript
+  $( '#chat-panel' ).hide();

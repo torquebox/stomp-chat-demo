@@ -1,0 +1,13 @@
+
+topics:
+  /topics/chat:
+
+stomp:
+  stomplets:
+    chat:
+      class: PublicStomplet
+      route: /public
+    inbound.private:
+      class: PrivateStomplet
+      route: /private
+
