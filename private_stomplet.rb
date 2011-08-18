@@ -19,7 +19,6 @@ class PrivateStomplet < TorqueBox::Stomp::JmsStomplet
 
   def on_subscribe(subscriber)
     username = subscriber.session[:username]
-    puts "subscribing to #{username} private messages"
     subscribe_to( subscriber, '/topics/chat', :topic, "recipient='#{username}'" )
   end
 
