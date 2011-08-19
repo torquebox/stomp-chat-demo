@@ -1,6 +1,5 @@
 
 require 'sinatra/base'
-include TorqueBox::Injectors
 
 class ChatDemo < Sinatra::Base
 
