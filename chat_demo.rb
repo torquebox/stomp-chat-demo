@@ -24,7 +24,7 @@ class ChatDemo < Sinatra::Base
   get '/profile/:username' do
     username = params[:username]
     message = "#{username}, someone from #{env['REMOTE_ADDR']} checked out your profile"
-    __inject__( '/topics/chat' ).publish( message, :properties=>{ :recipient=>username, :sender=>'system' } )
+    inject( '/topics/chat' ).publish( message, :properties=>{ :recipient=>username, :sender=>'system' } )
     haml :profile
   end
 end

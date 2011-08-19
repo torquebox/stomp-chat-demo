@@ -7,7 +7,7 @@ stomp:
     chat:
       class: PublicStomplet
       route: /public
-    inbound.private:
+    private:
       class: PrivateStomplet
       route: /private
-
+ 

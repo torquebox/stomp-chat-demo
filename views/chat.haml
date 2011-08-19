@@ -1,6 +1,10 @@
 
 :javascript
   var username = '#{session[:username]}';
+  var host = window.location.host.split( ':' )[0];
+  console.log( "host: " + host );
+  var stomp_url = 'ws://' + host + ':8675';
+  console.log( "stomp_url: " + stomp_url );
 
 %script{:src=>'/jquery.js'}
 %script{:src=>'/stilts-stomp.js'}

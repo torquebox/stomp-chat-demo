@@ -20,7 +20,7 @@ $( function() {
 
   $( '#recipient-public' ).click();
 
-  client = Stomp.client( "ws://localhost:8675/" )
+  client = Stomp.client( stomp_url );
 
   $( '#chat-form' ).bind( "submit", function(event) {
     recipient = $( '.recipient.current' ).attr( 'recipient' );
