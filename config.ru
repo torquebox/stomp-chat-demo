@@ -1,6 +1,4 @@
 
-$: << File.dirname( __FILE__ ) + '/lib'
-
 require 'chat_demo'
 
 require 'torquebox-web'
