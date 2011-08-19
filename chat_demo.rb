@@ -1,7 +1,10 @@
 
 require 'sinatra/base'
+include TorqueBox::Injectors
 
 class ChatDemo < Sinatra::Base
+
+  helpers TorqueBox::Injectors
 
   get '/' do
     haml :login
@@ -16,5 +19,12 @@ class ChatDemo < Sinatra::Base
 
     session[:username] = username
     haml :chat 
+  end
+
+  get '/profile/:username' do
+    username = params[:username]
+    message = "#{username}, someone from #{env['REMOTE_ADDR']} checked out your profile"
+    __inject__( '/topics/chat' ).publish( message, :properties=>{ :recipient=>username, :sender=>'system' } )
+    haml :profile
   end
 end

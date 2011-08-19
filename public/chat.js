@@ -1,11 +1,13 @@
 
 $( function() {
 
+  $( '.chat-window' ).height( $(window).height() - 80 );
   $( '.recipient' ).live( 'click', function(event) {
     recipient = $(this).attr( 'recipient' );
     recipient_window = $( '#chat-window-' + recipient );
     if ( recipient_window.size() == 0 ) {
       recipient_window = $( '<div/>' ).addClass( 'chat-window' ).attr( 'id', 'chat-window-' + recipient );
+      recipient_window.height( $(window).height() - 80 );
       $( '#chat-windows' ).append( recipient_window );
     }
 
@@ -62,11 +64,12 @@ $( function() {
         effective_window = $( '<div/>' ).addClass( 'chat-window' ).attr( 'id', 'chat-window-' + effective );
         $( '#chat-windows' ).append( effective_window );
         effective_window.hide();
+        effective_window.height( $(window).height() - 80 );
       }
 
       effective_window
         .append( $( '<div/>' ).addClass( 'message' ).addClass( effective )
-          .append( $( '<span/>' ).addClass( 'sender' ).text( effective ) ) 
+          .append( $( '<span/>' ).addClass( 'sender' ).text( sender ) ) 
           .append( $( '<span/>' ).addClass( 'text' ).text( message.body ) ) );
 
       current_recipient = $( '.recipient.current' ).attr( 'recipient' );
@@ -80,6 +83,7 @@ $( function() {
       if ( message.headers.roster ) {
         current_recipient = $( '.recipient.current' ).attr( 'recipient' );
         $('#recipient').children().remove();
+        $('#recipient').append( $('<div/>').attr( 'id', 'recipient-system' ).addClass( 'recipient' ).attr( 'recipient', 'system' ).text( 'System' ) );
         $('#recipient').append( $('<div/>').attr( 'id', 'recipient-public' ).addClass( 'recipient' ).attr( 'recipient', 'public' ).text( 'Everyone' ) );
         roster = $.parseJSON( message.body )
         $.each( roster, function(i, each) {
@@ -91,6 +95,7 @@ $( function() {
         } else {
           $( '#recipient-public' ).click();
         }
+        $( '#recipient-' + username ).addClass( 'self' );
       } else {
         shouldScroll = false;
         current_recipient = $( '.recipient.current' ).attr( 'recipient' );

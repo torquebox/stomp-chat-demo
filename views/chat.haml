@@ -16,12 +16,14 @@
     %table#chat-table
       %tr  
         %td#recipient
+          #recipient-system.recipient{:recipient=>'system'}
+            System
           #recipient-public.recipient{:recipient=>'public'}
             Everyone
         %td#chat
           #chat-windows
             #chat-window-public.chat-window
-              public chat!
+              
       %tr
         %td#input-cell{:colspan=>2}
           %input#input{:type=>:text, :size=>80}

@@ -15,7 +15,6 @@ html {
 
 #chat-table {
   width: 100%;
-  height: 400px;
 }
 
 #chat-table #recipient {
@@ -28,13 +27,16 @@ html {
 }
 
 .chat-window {
-  height: 400px;
   overflow-y: scroll;
 }
 
 
 .recipient.unread {
   font-style: italic;
+}
+
+.recipient.self {
+  color: #999;
 }
 
 #chat-table td {
@@ -44,6 +46,8 @@ html {
 
 .recipient.current {
   font-weight: bold;
+  color: blue;
+  background-color: #eee
 }
 
 #chat-table td#input-cell {
