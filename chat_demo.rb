@@ -8,12 +8,13 @@ class ChatDemo < Sinatra::Base
   end
   
   post '/' do
-    session[:username] = params[:username]
-    redirect to( '/chat' )
-  end
-  
+    username = params[:username]
+    redirect to( '/' ) and return if username.nil?
+    username.strip!
+    redirect to( '/' ) and return if ( username == '' )
+    redirect to( '/' ) and return if ( ! ( username =~ /^[a-zA-Z0-9_]+$/ ) )
 
-  get '/chat' do
+    session[:username] = username
     haml :chat 
   end
 end

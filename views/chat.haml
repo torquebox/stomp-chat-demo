@@ -1,4 +1,7 @@
 
+:javascript
+  var username = '#{session[:username]}';
+
 %script{:src=>'/jquery.js'}
 %script{:src=>'/stilts-stomp.js'}
 %script{:src=>'/chat.js'}
@@ -8,12 +11,20 @@
   #connecting
     %h1 Connecting to server, #{session[:username]}.  Please be patient.
 
-  #chat-panel
-    %form#chat
-      %select#recipient
-        %option{:value=>"public"}Everyone
-      %input#input{:type=>:text, :size=>80}
-    #chat-text
+#chat-panel
+  %form#chat-form
+    %table#chat-table
+      %tr  
+        %td#recipient
+          #recipient-public.recipient{:recipient=>'public'}
+            Everyone
+        %td#chat
+          #chat-windows
+            #chat-window-public.chat-window
+              public chat!
+      %tr
+        %td#input-cell{:colspan=>2}
+          %input#input{:type=>:text, :size=>80}
 
 :javascript
   $( '#chat-panel' ).hide();

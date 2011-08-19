@@ -19,7 +19,7 @@ class PrivateStomplet < TorqueBox::Stomp::JmsStomplet
 
   def on_subscribe(subscriber)
     username = subscriber.session[:username]
-    subscribe_to( subscriber, '/topics/chat', :topic, "recipient='#{username}'" )
+    subscribe_to( subscriber, '/topics/chat', :topic, "recipient='#{username}' OR ( sender='#{username}' AND NOT recipient='public')" )
   end
 
 end

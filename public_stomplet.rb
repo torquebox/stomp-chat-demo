@@ -21,17 +21,32 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
   end
 
   def on_subscribe(subscriber)
-    subscribe_to( subscriber, '/topics/chat', :topic, "recipient='public'" )
-
     username = subscriber.session[:username]
-    ( @roster << username ) unless @roster.include?( username )
+
+    subscribe_to( subscriber, '/topics/chat', :topic, "recipient='public'" )
 
     announcement = org.projectodd.stilts.stomp::StompMessages.createStompMessage( '/topics/chat', "#{username} joined" )
     announcement.headers['sender'] = 'system'
     announcement.headers['recipient'] = 'public'
-
     send_to( announcement, '/topics/chat', :topic )
 
+    ( @roster << username ) unless @roster.include?( username )
+    send_roster()
+  end
+
+  def on_unsubscribe(subscriber)
+    username = subscriber.session[:username]
+    @roster.delete_at(@roster.index(username) || @roster.length)
+    send_roster()
+    super
+
+    announcement = org.projectodd.stilts.stomp::StompMessages.createStompMessage( '/topics/chat', "#{username} left" )
+    announcement.headers['sender'] = 'system'
+    announcement.headers['recipient'] = 'public'
+    send_to( announcement, '/topics/chat', :topic )
+  end
+
+  def send_roster()
     roster_json = @roster.to_json
     roster = org.projectodd.stilts.stomp::StompMessages.createStompMessage( '/topics/chat', roster_json )
     roster.headers['sender'] = 'system'
@@ -40,6 +55,7 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
 
     send_to( roster, '/topics/chat', :topic )
   end
+
 
 
 end
