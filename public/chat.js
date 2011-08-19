@@ -25,7 +25,6 @@ $( function() {
   $( '#chat-form' ).bind( "submit", function(event) {
     recipient = $( '.recipient.current' ).attr( 'recipient' );
     if ( recipient == 'public' ) {
-      console.log( "sending to public" );
       client.send( '/public', {}, $('#input').val() );
     } else {
       client.send( '/private', { recipient: recipient }, $('#input').val() );
@@ -55,8 +54,6 @@ $( function() {
       if ( sender == username ) {
         effective = recipient;
       }
-
-      console.debug( "effective: " + effective );
       
       effective_window = $( '#chat-window-' + effective );
 
