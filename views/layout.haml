@@ -1,0 +1,11 @@
+!!!  
+%html  
+  %head  
+    %script{:src=>'/jquery.js'}
+    %script{:src=>'/jquery-ui-1.8.16.custom.min.js'}
+    %link{:rel=>'stylesheet', :href=>'/style.css'}
+    %link{:rel=>'stylesheet', :href=>'/jquery-ui-1.8.16.custom.css'} 
+    =content :head
+  %body  
+    #content
+      =content :body
