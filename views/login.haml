@@ -1,11 +1,10 @@
 
-%link{:rel=>'stylesheet', :href=>'/style.css'}
-%link{:rel=>'stylesheet', :href=>'/jquery-ui-1.8.16.custom.css'}
+- content_for :body do
+  %h1 TorqueBox STOMP-over-WebSockets Demo
 
-%h1 TorqueBox STOMP-over-WebSockets Demo
+  %form{ :method=>:post }
+    %input{:type=>:text, :name=>:username}
+    %input{:type=>:submit, :value=>'Login'}
 
-%form{ :method=>:post }
-  %input{:type=>:text, :name=>:username}
-  %input{:type=>:submit, :value=>'Login'}
-
-
+  :javascript
+    $('input:submit').button();

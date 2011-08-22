@@ -20,6 +20,8 @@ TorqueBox.ChatView = function() {
 	    $(window).unload(function() {
 	      $(TorqueBox.Events).trigger('TorqueBox.Chat.Close');
 	    });
+	
+		$( "input:submit" ).button();
 		
 	};
 	

@@ -8,12 +8,12 @@ $( function() {
 	
 	var chatView = new TorqueBox.ChatView();
 	chatView.initialize();
+	
 	var client = Stomp.client(stomp_url);
 	client.connect( null, null, function() {
 		
 		$(TorqueBox.Events).bind('TorqueBox.Chat.Close', function() { client.disconnect });
 		$(TorqueBox.Events).bind('TorqueBox.Chat.NewMessage', onNewMessage);
-		$(TorqueBox.Events).trigger('TorqueBox.Chat.Connect');
 
 		client.subscribe( '/private', function(message) {
 			$(TorqueBox.Events).trigger('TorqueBox.Chat.NewPrivateMessage', [message]);
@@ -22,6 +22,8 @@ $( function() {
 		client.subscribe( '/public', function(message) {
 			$(TorqueBox.Events).trigger('TorqueBox.Chat.NewPublicMessage', [message]);
 		});
+		
+		$(TorqueBox.Events).trigger('TorqueBox.Chat.Connect');
 		
 	});
 	

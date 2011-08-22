@@ -4,6 +4,16 @@ require 'sinatra/base'
 class ChatDemo < Sinatra::Base
 
   helpers TorqueBox::Injectors
+  
+  helpers do
+    def content_for(key, &block)
+      @content ||= {}
+      @content[key] = capture_haml(&block)
+    end
+    def content(key)
+      @content && @content[key]
+    end
+  end  
 
   get '/' do
     haml :login
