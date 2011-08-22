@@ -1,34 +1,35 @@
 
-:javascript
-  var username = '#{session[:username]}';
-  var host = window.location.host.split( ':' )[0];
-  var stomp_url = 'ws://' + host + ':8675';
+- content_for :head do
+  :javascript
+    var username = '#{session[:username]}';
+    var host = window.location.host.split( ':' )[0];
+    var stomp_url = 'ws://' + host + ':8675';
+  %script{:src=>'/stilts-stomp.js'}
+  %script{:src=>'/chat.js'}
+  %script{:src=>'/chat_view.js'}
 
-%script{:src=>'/jquery.js'}
-%script{:src=>'/stilts-stomp.js'}
-%script{:src=>'/chat.js'}
-%link{:rel=>'stylesheet', :href=>'/style.css'}
+- content_for :body do
+  #main-panel
+    #connecting
+      %h1 Connecting to server, #{session[:username]}.  Please be patient.
 
-#main-panel
-  #connecting
-    %h1 Connecting to server, #{session[:username]}.  Please be patient.
+  #chat-panel
+    %form#chat-form
+      %table#chat-table
+        %tr  
+          %td#recipient
+            #recipient-system.recipient{:recipient=>'system'}
+              System
+            #recipient-public.recipient{:recipient=>'public'}
+              Everyone
+          %td#chat
+            #chat-windows
+              #chat-window-public.chat-window
+           
+        %tr
+          %td#input-cell{:colspan=>2}
+            %input#input{:type=>:text, :size=>80}
+            %input#input{:type=>:submit, :value=>'Logout'}
 
-#chat-panel
-  %form#chat-form
-    %table#chat-table
-      %tr  
-        %td#recipient
-          #recipient-system.recipient{:recipient=>'system'}
-            System
-          #recipient-public.recipient{:recipient=>'public'}
-            Everyone
-        %td#chat
-          #chat-windows
-            #chat-window-public.chat-window
-              
-      %tr
-        %td#input-cell{:colspan=>2}
-          %input#input{:type=>:text, :size=>80}
-
-:javascript
-  $( '#chat-panel' ).hide();
+  :javascript
+    $( '#chat-panel' ).hide();

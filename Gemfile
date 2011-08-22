@@ -1,5 +1,5 @@
 
-source 'file:///Users/bob/repos/torquebox-2x/build/assembly/target/stage/gem-repo'
+source 'file:///Users/mdobozy/Development/Code/tb2/torquebox/build/assembly/target/stage/gem-repo'
 source :rubygems
 
 gem 'sinatra'
