@@ -22,18 +22,16 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
 
   def on_subscribe(subscriber)
     username = subscriber.session[:username]
-
-    subscribe_to( subscriber, @destination, "recipient='public'" )
+    subscribe_to( subscriber,  
+                  @destination,  
+                  "recipient='public'" )
     update_roster :add=>username
-    send_to( @destination, "#{username} joined", :sender=>:system, :recipient=>:public )
   end
 
   def on_unsubscribe(subscriber)
     username = subscriber.session[:username]
-
     update_roster :remove=>username
     super
-    send_to( @destination, "#{username} left", :sender=>:system, :recipient=>:public )
   end
 
   private
@@ -42,11 +40,23 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
     @lock.synchronize do
       [ (changes[:remove] || []) ].flatten.each do |username|
         @roster.delete_at(@roster.index(username) || @roster.length)
+        send_to( @destination, 
+                 "#{username} left", 
+                 :sender=>:system, 
+                 :recipient=>:public )
       end
       [ (changes[:add] || []) ].flatten.each do |username|
         @roster << username
+        send_to( @destination, 
+                 "#{username} joined", 
+                 :sender=>:system, 
+                 :recipient=>:public )
       end
-      send_to( @destination, @roster.uniq.to_json, :sender=>:system, :recipient=>:public, :roster=>true )
+      send_to( @destination, 
+               @roster.uniq.to_json, 
+               :sender=>:system, 
+               :recipient=>:public, 
+               :roster=>true )
     end
   end
 

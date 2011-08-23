@@ -17,9 +17,9 @@ TorqueBox.ChatView = function() {
     $( '#recipient-public' ).click();
     $( '#chat-form' ).bind( "submit", onMessageSubmit);
     
-      $(window).unload(function() {
-        $(TorqueBox.Events).trigger('TorqueBox.Chat.Close');
-      });
+    $(window).unload(function() {
+      $(TorqueBox.Events).trigger('TorqueBox.Chat.Close');
+    });
   
     $( "input:submit" ).button();
   };
