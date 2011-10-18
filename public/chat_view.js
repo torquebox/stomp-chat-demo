@@ -46,35 +46,36 @@ TorqueBox.ChatView = function() {
   };
   
   var onPublicMessageUpdate = function(event, message) {
-      if ( message.headers.roster ) {
-      current_recipient = $( '.recipient.current' ).attr( 'recipient' );
-      $('#recipient').children().remove();
-      $('#recipient').append( $('<div/>').attr( 'id', 'recipient-system' ).addClass( 'recipient' ).attr( 'recipient', 'system' ).text( 'System' ) );
-      $('#recipient').append( $('<div/>').attr( 'id', 'recipient-public' ).addClass( 'recipient' ).attr( 'recipient', 'public' ).text( 'Everyone' ) );
-      roster = $.parseJSON( message.body )
-      $.each( roster, function(i, each) {
-        $('#recipient').append( $('<div/>').attr( 'id', 'recipient-' + each ).addClass( 'recipient' ).attr( 'recipient', each ).text( each ) );
-      } );
-      new_current_recipient  = $( '#recipient-' + current_recipient );
-      if ( new_current_recipient.size() == 0 ) {
-        new_current_recipient.click();
-      } else {
-        $( '#recipient-public' ).click();
-      }
-      $( '#recipient-' + username ).addClass( 'self' );
-      } else {
-      shouldScroll = false;
-      current_recipient = $( '.recipient.current' ).attr( 'recipient' );
-      if ( current_recipient != 'public' ) {
-        $( '#recipient-public' ).addClass( 'unread' );
-      } else {
-        h = $( '#chat-window-public' ).height();
-        st = $( '#chat-window-public' ).scrollTop();
-        sh = $( '#chat-window-public' ).attr( 'scrollHeight' );
-        if ( ( st + h ) == sh ) {
-          shouldScroll = true;
+      console.debug( message );
+      if ( message.headers.roster == 'update' ) {
+        current_recipient = $( '.recipient.current' ).attr( 'recipient' );
+        $('#recipient').children().remove();
+        $('#recipient').append( $('<div/>').attr( 'id', 'recipient-system' ).addClass( 'recipient' ).attr( 'recipient', 'system' ).text( 'System' ) );
+        $('#recipient').append( $('<div/>').attr( 'id', 'recipient-public' ).addClass( 'recipient' ).attr( 'recipient', 'public' ).text( 'Everyone' ) );
+        roster = $.parseJSON( message.body )
+        $.each( roster, function(i, each) {
+          $('#recipient').append( $('<div/>').attr( 'id', 'recipient-' + each ).addClass( 'recipient' ).attr( 'recipient', each ).text( each ) );
+        } );
+        new_current_recipient  = $( '#recipient-' + current_recipient );
+        if ( new_current_recipient.size() == 0 ) {
+          new_current_recipient.click();
+        } else {
+          $( '#recipient-public' ).click();
         }
-          }
+        $( '#recipient-' + username ).addClass( 'self' );
+      } else {
+        shouldScroll = false;
+        current_recipient = $( '.recipient.current' ).attr( 'recipient' );
+        if ( current_recipient != 'public' ) {
+          $( '#recipient-public' ).addClass( 'unread' );
+        } else {
+          h = $( '#chat-window-public' ).height();
+          st = $( '#chat-window-public' ).scrollTop();
+          sh = $( '#chat-window-public' ).attr( 'scrollHeight' );
+          if ( ( st + h ) == sh ) {
+            shouldScroll = true;
+        }
+     }
 
       $( '#chat-window-public' )
         .append( $( '<div/>' ).addClass( 'message' ).addClass( message.headers.sender )

@@ -1,6 +1,7 @@
 
 - content_for :body do
   %h1 TorqueBox STOMP-over-WebSockets Demo
+  %h2 We know you as #{session[:username]}
 
   %form{ :method=>:post }
     %input{:type=>:text, :name=>:username}

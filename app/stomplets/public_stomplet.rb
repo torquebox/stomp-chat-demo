@@ -1,6 +1,5 @@
 
 require 'torquebox-stomp'
-require 'json'
 
 class PublicStomplet < TorqueBox::Stomp::JmsStomplet
 
@@ -9,8 +8,6 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
   def initialize()
     super
     @destination = inject( '/topics/chat' )
-    @lock = Mutex.new  
-    @roster = []
   end
 
   def on_message(stomp_message, session)
@@ -25,39 +22,24 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
     subscribe_to( subscriber,  
                   @destination,  
                   "recipient='public'" )
-    update_roster :add=>username
+    update_roster :join, username
   end
 
   def on_unsubscribe(subscriber)
     username = subscriber.session[:username]
-    update_roster :remove=>username
+    update_roster :part, username
     super
   end
 
   private
 
-  def update_roster(changes={})
-    @lock.synchronize do
-      [ (changes[:remove] || []) ].flatten.each do |username|
-        @roster.delete_at(@roster.index(username) || @roster.length)
-        send_to( @destination, 
-                 "#{username} left", 
-                 :sender=>:system, 
-                 :recipient=>:public )
-      end
-      [ (changes[:add] || []) ].flatten.each do |username|
-        @roster << username
-        send_to( @destination, 
-                 "#{username} joined", 
-                 :sender=>:system, 
-                 :recipient=>:public )
-      end
-      send_to( @destination, 
-               @roster.uniq.to_json, 
-               :sender=>:system, 
-               :recipient=>:public, 
-               :roster=>true )
-    end
+  def update_roster(action, username)
+    send_to( @destination, 
+             '',
+             :roster=>action,
+             :username=>username, 
+             :sender=>:system, 
+             :recipient=>:public )
   end
 
 end

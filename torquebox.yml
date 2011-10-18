@@ -2,6 +2,17 @@
 topics:
   /topics/chat:
 
+messaging:
+  /topics/chat: 
+    RosterTracker:
+      singleton: true
+      filter: "roster='join' OR roster='part'"
+
+services:
+  roster:
+    service: Roster
+    singleton: true
+
 stomp:
   stomplets:
     chat:

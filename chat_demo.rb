@@ -16,6 +16,7 @@ class ChatDemo < Sinatra::Base
   end  
 
   get '/' do
+    session[:start] = 'hi'
     haml :login
   end
   
@@ -27,6 +28,7 @@ class ChatDemo < Sinatra::Base
     redirect to( '/' ) and return if ( ! ( username =~ /^[a-zA-Z0-9_]+$/ ) )
 
     session[:username] = username
+    session[:port] = request.env['SERVER_PORT'].to_i + 595
     haml :chat 
   end
 
