@@ -1,32 +1,39 @@
+
 require 'json'
 
 class RosterTracker < TorqueBox::Messaging::MessageProcessor
 
   include TorqueBox::Injectors
 
+  attr_accessor :destination
+
   def initialize()
-    @roster = inject('service:roster' )
-    @dest   = inject('/topics/chat' )
+    @destination = inject( '/topics/chat' )
+    @roster = inject( 'service:roster' )
   end
 
   def on_message(body)
     action   = message.getStringProperty( 'roster' )
     username = message.getStringProperty( 'username' )
-    puts "received #{message} #{action} #{username}"
     if ( action == 'join' )
-      @roster.join( username )
-      distribute_roster()
+      join( username )
     elsif ( action == 'part' )
-      @roster.part( username )
-      distribute_roster()
+      part( username )
     end
+    distribute_roster()
+  end
+
+  def join(username)
+    @roster.join( username )
+  end
+
+  def part(username)
+    @roster.part( username )
   end
 
   def distribute_roster()
-    puts "sending out #{@roster.members.inspect}"
-    r = @roster.members.collect{|e| e}
-    @dest.publish(
-      r.to_json,
+    @destination.publish(
+      @roster.members_json,
       :encoding=>:text,
       :properties => {
         :sender=>'system',

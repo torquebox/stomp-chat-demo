@@ -13,6 +13,10 @@ class ChatDemo < Sinatra::Base
     def content(key)
       @content && @content[key]
     end
+
+    def stomp_url
+      inject( 'stomp-endpoint' )
+    end
   end  
 
   get '/' do
@@ -28,7 +32,6 @@ class ChatDemo < Sinatra::Base
     redirect to( '/' ) and return if ( ! ( username =~ /^[a-zA-Z0-9_]+$/ ) )
 
     session[:username] = username
-    session[:port] = request.env['SERVER_PORT'].to_i + 595
     haml :chat 
   end
 

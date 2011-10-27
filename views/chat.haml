@@ -3,7 +3,7 @@
   :javascript
     var username = '#{session[:username]}';
     var host = window.location.host.split( ':' )[0];
-    var stomp_url = 'ws://' + host + ":#{session[:port]}";
+    var stomp_url = "#{stomp_url}";
   %script{:src=>'/stilts-stomp.js'}
   %script{:src=>'/chat.js'}
   %script{:src=>'/chat_view.js'}

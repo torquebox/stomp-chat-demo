@@ -35,7 +35,7 @@ class PublicStomplet < TorqueBox::Stomp::JmsStomplet
 
   def update_roster(action, username)
     send_to( @destination, 
-             '',
+             "#{action}: #{username}",
              :roster=>action,
              :username=>username, 
              :sender=>:system, 

@@ -18,7 +18,6 @@ gem "torquebox-rake-support", gem_version
 gem "torquebox-messaging",    gem_version
 gem "torquebox-stomp",        gem_version
 gem "torquebox-web",          gem_version
+gem "torquebox-cache",        gem_version
 gem "json"
-
-
-
+gem 'mdp', :git => 'https://github.com/sundbp/mdp.git'

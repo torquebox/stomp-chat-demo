@@ -1,33 +1,45 @@
+require 'torquebox-cache'
+
 require 'json'
 
 class Roster
 
+  include TorqueBox::Injectors
+
   attr_accessor :members
+  attr_accessor :destination
 
   def initialize(opts={})
+    @destination = inject( '/topics/chat' )
+    @cache = TorqueBox::Infinispan::Cache.new( :name => 'roster' )
   end
 
   def start()
-    puts "START roster"
-    @members = []
   end
 
   def stop()
-    @members = []
   end
 
   def join(username)
-    @members << username.to_s
+    m = @cache.get( 'members' ) || [] 
+    m << username.to_s
+    @cache.put( 'members', m )
+    sleep( 2 )
   end
 
   def part(username)
-    @members.delete_at(@roster.index(username) || @roster.length)
+    m = @cache.get( 'members' ) || []
+    m << username.to_s
+    m.delete_at(members.index(username) || m.length)
+    @cache.put( 'members', m )
   end
 
-  def to_json
-    puts "JSON #{@members.inspect}"
-    json = @members.to_json
-    puts "JSON=#{json}"
-    json.to_s
+  def members
+    @cache.get( 'members' ) || []
   end
+
+  def members_json
+    members.to_json
+  end
+
 end
