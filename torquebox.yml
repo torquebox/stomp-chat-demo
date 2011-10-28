@@ -6,6 +6,7 @@ messaging:
   /topics/chat: 
     RosterTracker:
       filter: "roster='join' OR roster='part'"
+      singleton: true
 
 services:
   roster:

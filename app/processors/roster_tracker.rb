@@ -1,6 +1,4 @@
 
-require 'json'
-
 class RosterTracker < TorqueBox::Messaging::MessageProcessor
 
   include TorqueBox::Injectors
@@ -13,6 +11,8 @@ class RosterTracker < TorqueBox::Messaging::MessageProcessor
   end
 
   def on_message(body)
+    puts "RECEIVE: #{body}"
+
     action   = message.getStringProperty( 'roster' )
     username = message.getStringProperty( 'username' )
     if ( action == 'join' )
@@ -33,7 +33,7 @@ class RosterTracker < TorqueBox::Messaging::MessageProcessor
 
   def distribute_roster()
     @destination.publish(
-      @roster.members_json,
+      @roster.to_json,
       :encoding=>:text,
       :properties => {
         :sender=>'system',
