@@ -5,7 +5,7 @@ topics:
 messaging:
   /topics/chat: 
     RosterTracker:
-      filter: "roster='join' OR roster='part'"
+      selector: "roster='join' OR roster='part'"
       singleton: true
 
 services:
@@ -13,6 +13,7 @@ services:
     service: Roster
 
 stomp:
+  host: localhost
   stomplets:
     chat:
       class: PublicStomplet
@@ -20,4 +21,5 @@ stomp:
     private:
       class: PrivateStomplet
       route: /private
- 
+web:
+  host: localhost
